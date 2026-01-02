@@ -89,53 +89,69 @@ class Tool:
             enabled=data.get("enabled", True)
         )
 
-def get_config_root() -> Path:
-    """
-    Get the root directory for configuration files.
-    This works for both direct execution and PyInstaller bundles.
-    """
+def get_project_root(config_path: Optional[Path] = None) -> Path:
+    if config_path and config_path.exists():
+        return config_path.parent
+    
+    search_dirs = []
+    
+    search_dirs.append(Path.cwd())
+    
     if getattr(sys, 'frozen', False):
-        # Running as PyInstaller bundle
-        # Try to find config file in current working directory
-        cwd = Path.cwd()
-        config_in_cwd = cwd / "tools.yaml"
-        if config_in_cwd.exists():
-            return cwd
-        
-        # If not found, try the executable's parent directory
-        executable_dir = Path(sys.executable).parent
-        config_in_exe_dir = executable_dir / "tools.yaml"
-        if config_in_exe_dir.exists():
-            return executable_dir
-        
-        # Default to current directory
-        return cwd
+        exe_path = Path(sys.executable).resolve()
+        search_dirs.append(exe_path.parent)
+        search_dirs.append(exe_path.parent.parent)
     else:
-        # Running as Python script
-        return Path(__file__).parent.parent
+        script_path = Path(__file__).resolve()
+        search_dirs.append(script_path.parent)
+        search_dirs.append(script_path.parent.parent)
+    
+    for dir_path in search_dirs:
+        config_file = dir_path / "tools.yaml"
+        if config_file.exists():
+            return dir_path
+    
+    return Path.cwd()
+
+def ensure_project_directories(root_path: Path) -> None:
+    """确保项目目录结构存在。"""
+    for dir_name in ["bin", "startup", "tool"]:
+        dir_path = root_path / dir_name
+        dir_path.mkdir(exist_ok=True)
 
 class TmngConfig:
     """Configuration manager for tmng."""
     
     def __init__(self, config_path: Optional[Path] = None):
         self.console = Console()
-        self.config_root = get_config_root()
         
         if config_path is None:
-            config_path = self.config_root / "tools.yaml"
-        self.config_path = config_path
+            project_root = get_project_root()
+            config_path = project_root / "tools.yaml"
+        else:
+            project_root = config_path.parent
         
-        # Always work in the config root directory
-        try:
-            os.chdir(self.config_root)
-        except Exception as e:
-            self.console.print(f"[yellow]Warning: Could not change to config root: {e}[/yellow]")
+        self.config_path = config_path.resolve()
+        self.project_root = project_root.resolve()
         
-        self.console.print(f"[dim]Config root: {self.config_root}[/dim]")
+        ensure_project_directories(self.project_root)
+        
+        self._change_to_project_root()
+        
+        self.console.print(f"[dim]Project root: {self.project_root}[/dim]")
         self.console.print(f"[dim]Config path: {self.config_path}[/dim]")
         
         self.tools: List[Tool] = []
         self.load_config()
+    
+    def _change_to_project_root(self) -> None:
+        try:
+            current_dir = Path.cwd()
+            if current_dir != self.project_root:
+                os.chdir(self.project_root)
+        except Exception as e:
+            self.console.print(f"[yellow]Warning: Could not change to project root: {e}[/yellow]")
+            self.console.print(f"[yellow]Continuing in current directory: {current_dir}[/yellow]")
     
     def load_config(self) -> None:
         """Load configuration from YAML file."""
@@ -187,9 +203,9 @@ class TmngConfig:
     def update_symlinks(self) -> None:
         """Update symbolic links in startup and tool directories."""
         # Create directories if they don't exist
-        startup_dir = self.config_root / "startup"
-        tool_dir = self.config_root / "tool"
-        bin_dir = self.config_root / "bin"
+        startup_dir = self.project_root / "startup"
+        tool_dir = self.project_root / "tool"
+        bin_dir = self.project_root / "bin"
         
         for directory in [startup_dir, tool_dir, bin_dir]:
             directory.mkdir(exist_ok=True)
@@ -247,13 +263,13 @@ class TmngConfig:
     
     def update_shell_conf(self) -> None:
         """Update shell configuration file."""
-        shell_conf = self.config_root / "shell.conf"
+        shell_conf = self.project_root / "shell.conf"
         
         # Get absolute paths
         try:
-            startup_dir = (self.config_root / "startup").resolve()
-            tool_dir = (self.config_root / "tool").resolve()
-            bin_dir = (self.config_root / "bin").resolve()
+            startup_dir = (self.project_root / "startup").resolve()
+            tool_dir = (self.project_root / "tool").resolve()
+            bin_dir = (self.project_root / "bin").resolve()
         except Exception as e:
             self.console.print(f"[red]Error resolving paths: {e}[/red]")
             return
@@ -296,7 +312,7 @@ class TmngConfig:
             Path.home() / ".zshrc",
         ]
         
-        shell_conf_path = (self.config_root / "shell.conf").resolve()
+        shell_conf_path = (self.project_root / "shell.conf").resolve()
         source_line = f'\nsource "{shell_conf_path}"\n'
         
         for shell_file in shell_init_files:
@@ -359,7 +375,7 @@ tmng is a tool manager for organizing and managing your scripts and binaries.
   [bold]-a, --add[/bold]          Add new tool(s) to the manager
   [bold]-s, --stats[/bold]        Show statistics about managed tools
   [bold]--update-shell[/bold]     Update shell configuration manually
-  [bold]--config</path/to/config>[/bold]  Use alternative config file
+  [bold]--config PATH[/bold]      Use alternative config file
 
 [bold cyan]Examples:[/bold cyan]
   tmng -l                    List and manage tools
@@ -463,12 +479,10 @@ tmng is a tool manager for organizing and managing your scripts and binaries.
                     group_node = tree.add(f"[bold blue]{group_name}[/bold blue]")
                 
                 for tool in sorted(grouped_tools[group_name], key=lambda x: x.name):
-                    # 使用小圆点作为状态图标
                     status_icon = "●"  # 小圆点
                     status_color = "green" if tool.enabled else "red"
                     
-                    # 使用小图标作为类别图标
-                    category_icon = "⚡" if tool.category == Category.STARTUP.value else "🛠️"  # 更小的图标
+                    category_icon = "⚡" if tool.category == Category.STARTUP.value else "🛠️"
                     
                     tool_text = Text.assemble(
                         (status_icon, status_color),
@@ -541,7 +555,7 @@ tmng is a tool manager for organizing and managing your scripts and binaries.
         # Build tool choices
         choices = []
         for tool in self.config.tools:
-            status = "● Enabled" if tool.enabled else "● Disabled"  # 使用小圆点
+            status = "● Enabled" if tool.enabled else "● Disabled"
             group = f" ({tool.group})" if tool.group else ""
             choices.append(
                 (f"{tool.alias} - {tool.description}{group} [{status}]", tool.name)

@@ -15,7 +15,7 @@ IMPORTANT: Do NOT post this list to the issue-tracker. Use it as a basis for
             tracking down the missing module yourself. Thanks!
 
 missing module named pyimod03_importers - imported by /home/astor/Tools-Manager/.venv/lib/python3.6/site-packages/PyInstaller/hooks/rthooks/pyi_rth_pkgutil.py (top-level), /home/astor/Tools-Manager/.venv/lib/python3.6/site-packages/PyInstaller/hooks/rthooks/pyi_rth_pkgres.py (top-level)
-missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements (top-level), pkg_resources._vendor.packaging.markers (top-level)
+missing module named StringIO - imported by six (conditional), pkg_resources._vendor.six (conditional)
 missing module named 'ctypes.macholib' - imported by ctypes.util (conditional)
 missing module named netbios - imported by uuid (delayed)
 missing module named win32wnet - imported by uuid (delayed)
@@ -27,7 +27,7 @@ excluded module named _frozen_importlib - imported by importlib (optional), impo
 missing module named __builtin__ - imported by pkg_resources._vendor.pyparsing (conditional)
 missing module named ordereddict - imported by pkg_resources._vendor.pyparsing (optional)
 missing module named 'org.python' - imported by copy (optional), xml.sax (delayed, conditional)
-missing module named StringIO - imported by six (conditional), pkg_resources._vendor.six (conditional)
+missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements (top-level), pkg_resources._vendor.packaging.markers (top-level)
 missing module named 'win32com.shell' - imported by pkg_resources._vendor.appdirs (conditional, optional)
 missing module named 'com.sun' - imported by pkg_resources._vendor.appdirs (delayed, conditional, optional)
 missing module named com - imported by pkg_resources._vendor.appdirs (delayed)

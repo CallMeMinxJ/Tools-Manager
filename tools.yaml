@@ -7,3 +7,10 @@ tools:
   path: ~/Syncf/bin/syncf
   description: auto pack and unpack files by filelist
   enabled: true
+- name: clash_proxy
+  alias: clash-proxy
+  category: startup
+  group: net
+  path: ~/Scripts/clash_proxy.sh
+  description: open clash proxy on port
+  enabled: true
