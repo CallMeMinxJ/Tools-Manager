@@ -1,0 +1,9 @@
+version: '1.0'
+tools:
+- name: syncf
+  alias: syncf
+  category: tool
+  group: None
+  path: ~/Syncf/bin/syncf
+  description: auto pack and unpack files by filelist
+  enabled: true

@@ -1,0 +1,4 @@
+# requirements.txt
+rich>=12.0.0
+inquirer>=2.8.0
+PyYAML>=6.0

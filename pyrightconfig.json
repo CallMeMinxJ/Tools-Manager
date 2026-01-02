@@ -1,0 +1,11 @@
+{
+    "include": ["src"],
+    "exclude": [
+        "**/__pycache__",
+        "**/.pytest_cache",
+    ],
+    "extraPaths": ["src"],
+    "venvPath": ".",
+    "venv": ".venv",
+    "typeCheckingMode": "basic"
+}

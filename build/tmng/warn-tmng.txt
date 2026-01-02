@@ -1,0 +1,65 @@
+
+This file lists modules PyInstaller was not able to find. This does not
+necessarily mean this module is required for running your program. Python and
+Python 3rd-party packages include a lot of conditional or optional modules. For
+example the module 'ntpath' only exists on Windows, whereas the module
+'posixpath' only exists on Posix systems.
+
+Types if import:
+* top-level: imported at the top-level - look at these first
+* conditional: imported within an if-statement
+* delayed: imported within a function
+* optional: imported within a try-except-statement
+
+IMPORTANT: Do NOT post this list to the issue-tracker. Use it as a basis for
+            tracking down the missing module yourself. Thanks!
+
+missing module named pyimod03_importers - imported by /home/astor/Tools-Manager/.venv/lib/python3.6/site-packages/PyInstaller/hooks/rthooks/pyi_rth_pkgutil.py (top-level), /home/astor/Tools-Manager/.venv/lib/python3.6/site-packages/PyInstaller/hooks/rthooks/pyi_rth_pkgres.py (top-level)
+missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements (top-level), pkg_resources._vendor.packaging.markers (top-level)
+missing module named 'ctypes.macholib' - imported by ctypes.util (conditional)
+missing module named netbios - imported by uuid (delayed)
+missing module named win32wnet - imported by uuid (delayed)
+missing module named urllib.quote - imported by urllib (optional), commonmark.common (optional)
+missing module named _dummy_threading - imported by dummy_threading (optional)
+missing module named winreg - imported by platform (delayed, optional), mimetypes (optional), urllib.request (delayed, conditional, optional), pygments.formatters.img (optional)
+missing module named _frozen_importlib_external - imported by importlib._bootstrap (delayed), importlib (optional), importlib.abc (optional)
+excluded module named _frozen_importlib - imported by importlib (optional), importlib.abc (optional)
+missing module named __builtin__ - imported by pkg_resources._vendor.pyparsing (conditional)
+missing module named ordereddict - imported by pkg_resources._vendor.pyparsing (optional)
+missing module named 'org.python' - imported by copy (optional), xml.sax (delayed, conditional)
+missing module named StringIO - imported by six (conditional), pkg_resources._vendor.six (conditional)
+missing module named 'win32com.shell' - imported by pkg_resources._vendor.appdirs (conditional, optional)
+missing module named 'com.sun' - imported by pkg_resources._vendor.appdirs (delayed, conditional, optional)
+missing module named com - imported by pkg_resources._vendor.appdirs (delayed)
+missing module named win32api - imported by pkg_resources._vendor.appdirs (delayed, conditional, optional)
+missing module named win32com - imported by pkg_resources._vendor.appdirs (delayed)
+missing module named _winreg - imported by platform (delayed, optional), pygments.formatters.img (optional), pkg_resources._vendor.appdirs (delayed)
+missing module named pkg_resources.extern.packaging - imported by pkg_resources.extern (top-level), pkg_resources (top-level)
+missing module named pkg_resources.extern.appdirs - imported by pkg_resources.extern (top-level), pkg_resources (top-level)
+missing module named 'pkg_resources.extern.six.moves' - imported by pkg_resources (top-level), pkg_resources._vendor.packaging.requirements (top-level)
+missing module named pkg_resources.extern.six - imported by pkg_resources.extern (top-level), pkg_resources (top-level)
+missing module named _scproxy - imported by urllib.request (conditional)
+missing module named msvcrt - imported by subprocess (conditional), getpass (optional), multiprocessing.spawn (delayed, conditional), multiprocessing.popen_spawn_win32 (top-level), blessed.win_terminal (top-level), readchar.readchar (conditional), readchar.readchar_windows (top-level)
+missing module named 'java.lang' - imported by platform (delayed, optional), xml.sax._exceptions (conditional)
+missing module named vms_lib - imported by platform (delayed, conditional, optional)
+missing module named java - imported by platform (delayed)
+missing module named org - imported by pickle (optional)
+missing module named 'jinxed.win32' - imported by blessed.terminal (conditional)
+missing module named jinxed - imported by blessed.win_terminal (top-level), blessed.keyboard (conditional), blessed.formatters (conditional), blessed.terminal (conditional)
+missing module named 'jinxed.has_key' - imported by blessed.keyboard (conditional)
+missing module named backports - imported by blessed.color (optional)
+missing module named ncourses - imported by inquirer.render (optional)
+missing module named IPython - imported by rich.jupyter (delayed, optional)
+missing module named ipywidgets - imported by rich.live (delayed, conditional, optional)
+missing module named 'IPython.display' - imported by rich.live (delayed, conditional, optional)
+missing module named 'IPython.core' - imported by rich.pretty (delayed, optional)
+missing module named attr - imported by rich.pretty (optional)
+missing module named pygments.lexers.PrologLexer - imported by pygments.lexers (top-level), pygments.lexers.cplint (top-level)
+missing module named PIL - imported by pygments.formatters.img (optional)
+missing module named pep517 - imported by importlib_metadata (delayed)
+missing module named 'importlib.metadata' - imported by pygments.plugin (delayed, optional)
+missing module named ctags - imported by pygments.formatters.html (optional)
+missing module named chardet - imported by pygments.lexer (delayed, conditional, optional)
+missing module named _winapi - imported by subprocess (conditional), multiprocessing.reduction (conditional), multiprocessing.connection (optional), multiprocessing.heap (conditional), multiprocessing.popen_spawn_win32 (top-level)
+missing module named nt - imported by os (conditional, optional), ntpath (conditional, optional), shutil (conditional), pathlib (conditional)
+missing module named 'yaml._yaml' - imported by yaml.cyaml (top-level)
